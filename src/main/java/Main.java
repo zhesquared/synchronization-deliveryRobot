@@ -31,11 +31,7 @@ public class Main {
         }
         threadPool.invokeAll(threads);
         threadPool.shutdown();
-
-        System.out.println(Collections.max(sizeToFreq.values()));
-        for(Map.Entry<Integer, Integer> item : sizeToFreq.entrySet()){
-            System.out.printf("Key: %s  Value: %s \n", item.getKey(), item.getValue());
-        }
+        display(sizeToFreq);
     }
 
     public static String generateRoute(String letters, int length) {
@@ -45,5 +41,21 @@ public class Main {
             route.append(letters.charAt(random.nextInt(letters.length())));
         }
         return route.toString();
+    }
+
+    public static void display(Map<Integer, Integer> map) {
+        Integer maxKey = map.keySet().stream()
+                .max(Comparator.comparing(map::get))
+                .orElse(null);
+        int maxValue = Collections.max(sizeToFreq.values());
+        System.out.printf("Самое частое количество повторений %s (встретилось %s раз)\n", maxKey, maxValue);
+
+        for (Map.Entry<Integer, Integer> item : sizeToFreq.entrySet()) {
+            if (item.getKey().equals(maxKey)) {
+                continue;
+            } else {
+                System.out.printf("- %s (%s раз) \n", item.getKey(), item.getValue());
+            }
+        }
     }
 }
